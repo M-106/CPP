@@ -51,6 +51,7 @@ May use it as a reference ❤️
 This part contains the most essential knowledge about C++ shorten for a lunch break.
 
 <a name="bascis_top_">Contents:</a>
+- <a href="#basics_compiling_cpp">Compiling</a>
 - <a href="#basics_header_cpp">Header and C++ Files</a>
 - <a href="#basics_stack_and_heap_">Stack and Heap</a>
 - <a href="#basics_main_">Main</a>
@@ -87,6 +88,127 @@ It follows some keyconcepts to keep in mind when working with C++.
 
 <br><br>
 
+<a name="basics_compiling_cpp" href="#bascis_top_">^</a><br>
+**Compiling**
+
+C++ does not come with its own auto Compiling tool. The user have to use an compiler by himself.
+
+Most likely you can use an compiler directly or use an tool for more features, like `CMake`.
+
+The compiling process goes through every explicitly given `.cpp`-file and runs:
+1. **Preprocessor**
+    - **Include Header files**<br>
+        Paste the *declaration* (and definitions) from included header files inside the code (if using macros like `#pragma once` or `#ifndef #define ... #endif` the code gets only pasted if not pasted already earlier).
+    - **Process Macros**
+2. **Compiler**
+    - **Convert to `.obj`**<br>
+        Creates object code, which is machine code (binary) with missing references/jumps which will be added at the next step.
+3. **Linker**
+    - **Links object files + external files**<br>
+        The different `.obj`-files gets linked to each other and merged also with external files to one executable machine code.
+
+<br><br>
+
+Available C++ compiler:
+- GCC (g++) – Very common on Linux and Windows (via MinGW)
+- Clang (clang++) – Modern, fast, great diagnostics
+- MSVC (cl.exe) – Microsoft Visual C++ compiler on Windows
+- Intel oneAPI (icpx / icc) – Optimized for Intel CPUs
+
+<br><br>
+
+Running C++ compiler:
+
+With GCC:
+- Compile a single file:
+    ```bash
+    g++ main.cpp -o program
+    ```
+- Compile multiple files:
+    ```bash
+    g++ main.cpp utils.cpp math.cpp -o program
+    ```
+- Specify C++ standard:
+    ```bash
+    g++ -std=c++20 main.cpp -o program
+    ```
+- Add include directory (where it searches for `.h`/`.hpp` files):
+    ```bash
+    g++ -Iinclude main.cpp -o program
+    ```
+- Create object files manually:
+    ```bash
+    g++ -c main.cpp
+    g++ -c utils.cpp
+    g++ main.o utils.o -o program
+    ```
+
+With clang:
+- Compile a single file:
+    ```bash
+    clang++ main.cpp -o program
+    ```
+- Compile multiple files:
+    ```bash
+    clang++ main.cpp utils.cpp math.cpp -o program
+    ```
+- Specify C++ standard:
+    ```bash
+    clang++ -std=c++20 main.cpp -o program
+    ```
+- Add include directory (where it searches for `.h`/`.hpp` files):
+    ```bash
+    clang++ -Iinclude main.cpp -o program
+    ```
+- Create object files manually:
+    ```bash
+    clang++ -c main.cpp
+    clang++ -c utils.cpp
+    clang++ main.o utils.o -o program
+    ```
+
+<br><br>
+
+Using CMake for C++ compiling:
+
+CMake generates platform-specific build files (Makefiles, Ninja, Visual Studio projects, etc.).
+
+Minimal project structure:
+```text
+project/
+ ├─ CMakeLists.txt
+ └─ src/
+     └─ main.cpp
+```
+
+Minimal `CMakeLists.txt`:
+```txt
+cmake_minimum_required(VERSION 3.16)
+project(MyProgram)
+
+set(CMAKE_CXX_STANDARD 20)
+
+add_executable(MyProgram src/main.cpp)
+```
+
+Build with CMake:
+```bash
+mkdir build
+cd build
+cmake ..
+cmake --build .
+```
+
+Run program:
+```bash
+./MyProgram
+```
+
+
+
+
+<br><br>
+
 <a name="basics_header_cpp" href="#bascis_top_">^</a><br>
 **Header Files and C++ Files**
 
@@ -98,7 +220,7 @@ But there some exceptions, where a header file also includes the implementation 
 
 **Header Files (`.h` / `.hpp`)**
 
-Header files contain declarations — not implementations.
+Header files contain declarations - not implementations.
 
 They usually include:
 - Class and struct definitions
@@ -733,7 +855,7 @@ Important: 'const' makes not the pointer constant but it's value address.
 Smart pointers are **RAII (Resource Acquisition Is Initialization)** objects that automatically manage memory.
 They are defined in `<memory>` and replace raw pointers (`new` / `delete`) in modern C++.
 
-Smart pointers ensure that dynamically allocated memory is **automatically released** when the pointer goes out of scope — avoiding memory leaks and dangling pointers.
+Smart pointers ensure that dynamically allocated memory is **automatically released** when the pointer goes out of scope - avoiding memory leaks and dangling pointers.
 
 Use:<br>
 `std::make_unique<T>()` and `std::make_shared<T>()`
@@ -2274,7 +2396,7 @@ Procedural Programming is like a sub-category of imperative programming and uses
 - Use for simple algorithms, math routines, and performance-critical code.
 - Keeps execution flow explicit and easy to debug.
 - Ideal for utilities, data transformations, and embedded code.
-- Avoid over-engineering — sometimes a clean loop is all you need.
+- Avoid over-engineering - sometimes a clean loop is all you need.
 
 Example:
 ```cpp
@@ -2371,7 +2493,7 @@ Modern C++ offers many features that make manual memory management and unsafe pa
 Be carefully with C++ legacy code! And be careful with AI-generated code, which is often not maintainable and only "functional".
 
 **General Principles:**
-- Always use modern C++ (C++17 or newer) — safer and more expressive
+- Always use modern C++ (C++17 or newer) - safer and more expressive
 - Prefer clarity and correctness over cleverness
 - Keep functions, classes, and modules small and focused
 
@@ -2388,7 +2510,7 @@ Be carefully with C++ legacy code! And be careful with AI-generated code, which 
 - Use move semantics to avoid unnecessary copies
 - Favor immutability (`const`) and references over raw pointers
 - Use modules (C++20+) to reduce compile time and dependency complexity
-- Avoid macros for logic — use `constexpr` or inline functions instead
+- Avoid macros for logic - use `constexpr` or inline functions instead
 - Avoid manual `new`, `delete`, and `malloc`
 
 **Memory Safe:**
@@ -2399,7 +2521,7 @@ Be carefully with C++ legacy code! And be careful with AI-generated code, which 
 **Testing and Maintainability:**
 - Follow a test-driven or at least test-supported approach
       -  Write unit tests before or after implementing functionality
-- Clean and refactor after adding new code — technical debt accumulates fast
+- Clean and refactor after adding new code - technical debt accumulates fast
     - With every line of new code, you increase your technical debt. Or in other words: you make your code uglier with every new code
     - After new code/new features, it is important to take time to clean the new (and maybe the old code), and maybe refactor some parts. Making some parts more modular or using polymorphy and more smaller functions.
 - Modularize and generalize where duplication occurs (DRY principle)
@@ -2443,14 +2565,14 @@ Also choose the right programmin paradigm for the right tasks. <a href="#basics_
 **Modern C++**<br>
 
 Modern C++ refers to the evolution of the C++ language starting with C++11 and continuing through C++14, C++17, C++20, and C++23.
-The goal of modern C++ is to write safer, cleaner, and more expressive code — without sacrificing performance.
+The goal of modern C++ is to write safer, cleaner, and more expressive code - without sacrificing performance.
 
 Modern C++ encourages:
-- **RAII (Resource Acquisition Is Initialization)** — automatic resource management
-- **Value semantics** — prefer copying/moving over raw pointers
-- **Type inference** — let the compiler deduce types
-- **Zero-cost abstractions** — high-level code that compiles to optimal machine code
-- **Safety through ownership and immutability** — avoid manual memory handling
+- **RAII (Resource Acquisition Is Initialization)** - automatic resource management
+- **Value semantics** - prefer copying/moving over raw pointers
+- **Type inference** - let the compiler deduce types
+- **Zero-cost abstractions** - high-level code that compiles to optimal machine code
+- **Safety through ownership and immutability** - avoid manual memory handling
 
 **Key Features**
 - **Type Inference**
