@@ -5,6 +5,7 @@
 Contents
 - <a href="#compiling_and_linking">Compiling and Linking</a>
 - <a href="#runcppcode">Run C++ Code with GNU</a>
+- <a href="#runclangcppcode">Run C++ Code with clang++</a>
 - <a href="#cmake_">CMake</a>
 
 
@@ -69,17 +70,17 @@ Another way is to type following in a terminal:
 1. First you compile your program and create a executeable file:
     - ```terminal
       g++ main.cpp -o main
-      ```
+        ```
     - If you have multiple C++ Files you can do:
-    ```terminal
-    g++ -o main main.cpp game.cpp
-    ```
-    or:
-    ```terminal
-    g++ -c main.cpp
-    g++ -c game.cpp
-    g++ -o main main.o game.o
-    ```
+        ```terminal
+        g++ -o main main.cpp game.cpp
+        ```
+        or:
+        ```terminal
+        g++ -c main.cpp
+        g++ -c game.cpp
+        g++ -o main main.o game.o
+        ```
 2. Then you can execute it:
     ```terminal
     ./main.exe
@@ -97,20 +98,121 @@ Another way is to type following in a terminal:
 
 In Depth:
 - assemble:
-```terminal
-g++ -S program.cpp
-```
+    ```terminal
+    g++ -S program.cpp
+    ```
 - compile:
-```terminal
-g++ -c program.cpp -o program.o
-```
+    ```terminal
+    g++ -c program.cpp -o program.o
+    ```
 - build:
-```terminal
-g++ program.o -o program
-```
+    ```terminal
+    g++ program.o -o program
+    ```
 
 
 > You can add a parameter at the beginning of every command to specify how much the code should be optimized. For debugging it is common to not optimize your code to can analyze your code.<br>For Debugging: g++ -O0 -g3 ...<br>For Release: g++ -O3 ...
+
+<br><br>
+
+---
+
+<h3><a name="runclangcppcode">Run C++ Code (with clang++)</a></h3>
+
+The Clang compiler (clang/clang++) is a standard compiler for c and c++ and here you see how to use it.
+
+Most simple way to compile a C++ program with Clang is to create a **make** file and use make to compile your C++-Files (for this you can install cygwin in Windows to use make <a href="#installation_">see here</a>):
+
+```terminal
+# Compiler
+CXX = clang++  # Use this if you're using LLVM/Clang (e.g. on Linux/macOS)
+
+# Compiler flags
+CXXFLAGS = -Wall -std=c++17
+
+# List of source files
+SRCS = main.cpp file1.cpp file2.cpp
+
+# List of object files
+OBJS = $(SRCS:.cpp=.o)
+
+# Name of the output executable
+TARGET = my_program.exe
+
+# Default target: build the executable
+all: $(TARGET)
+
+# Rule to link object files into the executable
+$(TARGET): $(OBJS)
+    $(CXX) $(OBJS) -o $(TARGET)
+
+# Rule to compile each source file into an object file
+%.o: %.cpp
+    $(CXX) $(CXXFLAGS) -c $< -o $@
+
+# Clean up build files
+clean:
+    rm -f $(OBJS) $(TARGET)
+
+```
+
+The Makefile is just a plain textfile without a file type ending. Just name the file "Makefile" and execute it with "make" (or "mingw32-make" if you are using it on windows).
+
+You can also create the Makefile automatically with CMake. [See here for using CMake](#cmake_).
+
+Another way is to type following in a terminal:
+
+1. First you compile your program and create a executeable file:
+
+   * ```terminal
+     clang++ main.cpp -o main
+     ```
+   * If you have multiple C++ Files you can do:
+   ```terminal
+   clang++ -o main main.cpp game.cpp
+   ```
+
+   or:
+
+   ```terminal
+   clang++ -c main.cpp
+   clang++ -c game.cpp
+   clang++ -o main main.o game.o
+   ```
+2. Then you can execute it:
+
+   ```terminal
+   ./main.exe
+   ```
+
+   Or in Linux:
+
+   ```terminal
+   ./main
+   ```
+
+> Hint:<br>Use the terminal and navigate with cd .. and cd 01_variables_datatypes_logic to the right folder.<br>You also can type 00 and then tab-key to use auto completion.
+
+In Depth:
+
+* assemble:
+
+  ```terminal
+  clang++ -S program.cpp
+  ```
+* compile:
+
+  ```terminal
+  clang++ -c program.cpp -o program.o
+  ```
+* build:
+
+  ```terminal
+  clang++ program.o -o program
+  ```
+
+> You can add a parameter at the beginning of every command to specify how much the code should be optimized. For debugging it is common to not optimize your code to can analyze your code.<br>For Debugging: clang++ -O0 -g3 ...<br>For Release: clang++ -O3 ...
+
 
 
 <br><br>

@@ -56,10 +56,35 @@ Most used compiler is the GNU Compiler Collection (GCC). It is used to compile c
 -->
     
 - Download a C++ Compiler in **Windows**:
-    - Download MinGW on: https://winlibs.com/
-    - Unzipping in a path you like
-    - Add MinGW to the system path variables. Then you can use the normal cmd or Powershell or the terminal in Visual Studio Code.<br>To do so，you have to search/open the system-variables (environment variables). There you search the entry "Path", there should be already some paths. To these paths you add the path of MinGW bin folder, probably: **C:\MinGW\bin** <br>And now it should work. Maybe a restart is requirement, if it doesn't works.
-    - Download [Ninja](https://ninja-build.org/) -> download the win-zip file + also add the path to ninja.exe to the system path as decribed before
+    On windows the best option is to use MSYS2 and MinGW. MinGW provides basic mapping of linux operations to native windows operations and MSYS is a installation manager which uses MinGW to use a GCC compiler. **Do not download MinGW over the official page**, this is a old distribution and is now updated and maintained via MSYS plattform.
+    - Download [MSYS2 from the official page](https://www.msys2.org/) + run the downloded installer exe and follow the instructions
+    - Open the right shell.<br>
+        MSYS comes with 3 shells `MSYS` (linux-like environment), `MINGW` (windows native environment), `UCRT` (modern windows native environment). For windows developement you have to use one of the last 2.<br>
+        Type 
+        ```bash
+        echo $MSYSTEM
+        ``` 
+        and make sure you are in the right shell.
+    - Install the GCC MinGW compiler:
+        ```bash
+        pacman -Syu
+        pacman -S mingw-w64-ucrt-x86_64-gcc
+
+        # or if using MINGW shell
+        pacman -S mingw-w64-i686-gcc
+
+        # or if using MSYS shell
+        pacman -S gcc
+        ```
+    - Version checking
+        ```bash
+        g++ --version 
+        which g++
+        ```
+    - Usage -> [also see](./Execution.md)
+        ```cpp
+        g++ main.cpp -o main.exe
+        ```
 
 
 
