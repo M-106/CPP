@@ -13,7 +13,6 @@ May use it as a reference ❤️
 - **Basics** (Installation & Execution)
     - <a href="./docs/Basics/Installation.md">Installation</a>
     - <a href="./docs/Basics/Execution.md">Code Execution</a>
-    - <a href="./docs/Basics/Testing.md">Testing</a>
     - <a href="./docs/Basics/Environment.md">Coding Environment</a>
     - <a href="./docs/Basics/Introduction.md">Introduction</a>
 - **Language Basics**

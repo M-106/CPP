@@ -123,15 +123,25 @@ Most used compiler is the GNU Compiler Collection (GCC). It is used to compile c
             )
 
             # Install it (optional)
-            install(TARGETS mapproxifold DESTINATION lib)
-            install(DIRECTORY mapproxifold/include/ DESTINATION include)
+            # install(TARGETS mapproxifold DESTINATION lib)
+            # install(DIRECTORY mapproxifold/include/ DESTINATION include)
 
             # Test executable
-            add_executable(test_app
-                tests/test.cpp
+            file(GLOB TEST_SOURCES
+                tests/*.cpp
             )
 
-            target_link_libraries(test_app PRIVATE mapproxifold)
+            add_executable(test_app ${TEST_SOURCES})
+
+            target_link_libraries(test_app PRIVATE
+                mapproxifold
+                Catch2::Catch2WithMain
+            )
+
+            include(CTest)
+            include(Catch)
+
+            catch_discover_tests(test_app)
             ```
         3. Make build dir / clear build dir
             ```bash

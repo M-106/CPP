@@ -4,7 +4,141 @@
 
 <h1><a href='top' name='own_cpp_lib_'>Own C++ Lib</a></h1>
 
-If you want to create your own C++ library than you are here right. In following tutorial we think that our lib has the name tensor-rush, but you can change to the name you want.
+If you want to create your own C++ library than you are here right.
+
+> Cloning/Downloading the source code from Github and then adding them to the search path for headers/source files of course also works.
+
+<br><br>
+
+---
+
+### CMake Package
+
+> `mapproxifold` is used as project name her as an example, replace it with your project name.
+
+1. Make sure you export your target properly.<br>
+    Add a `CMakeLists.txt` and design it similiar like the following one:
+
+    ```cmake
+    # (standard cmake the first part)
+
+    cmake_minimum_required(VERSION 3.15)
+    project(mapproxifold VERSION 1.0.0)
+
+    set(CMAKE_CXX_STANDARD 17)
+    set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+    # ----------------------------------------
+    # Library
+    # ----------------------------------------
+
+    file(GLOB_RECURSE MAPX_SOURCES
+        mapproxifold/src/*.cpp
+    )
+
+    add_library(mapproxifold ${MAPX_SOURCES})
+
+    target_include_directories(mapproxifold
+        PUBLIC
+            $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/mapproxifold/include>
+            $<INSTALL_INTERFACE:include>
+    )
+
+    # Give it a namespace (VERY IMPORTANT)
+    add_library(mapproxifold::mapproxifold ALIAS mapproxifold)
+
+    # ----------------------------------------
+    # Install rules >>> IMPORTANT PART <<<
+    # ----------------------------------------
+
+    install(TARGETS mapproxifold
+        EXPORT mapproxifoldTargets
+        ARCHIVE DESTINATION lib
+        LIBRARY DESTINATION lib
+        RUNTIME DESTINATION bin
+    )
+
+    install(DIRECTORY mapproxifold/include/
+        DESTINATION include
+    )
+
+    # Export target config
+    install(EXPORT mapproxifoldTargets
+        FILE mapproxifoldTargets.cmake
+        NAMESPACE mapproxifold::
+        DESTINATION lib/cmake/mapproxifold
+    )
+
+    include(CMakePackageConfigHelpers)
+
+    write_basic_package_version_file(
+        "${CMAKE_CURRENT_BINARY_DIR}/mapproxifoldConfigVersion.cmake"
+        VERSION ${PROJECT_VERSION}
+        COMPATIBILITY AnyNewerVersion
+    )
+
+    configure_file(
+        "${CMAKE_CURRENT_SOURCE_DIR}/mapproxifoldConfig.cmake.in"
+        "${CMAKE_CURRENT_BINARY_DIR}/mapproxifoldConfig.cmake"
+        COPYONLY
+    )
+
+    install(FILES
+        "${CMAKE_CURRENT_BINARY_DIR}/mapproxifoldConfig.cmake"
+        "${CMAKE_CURRENT_BINARY_DIR}/mapproxifoldConfigVersion.cmake"
+        DESTINATION lib/cmake/mapproxifold
+    )
+    ```
+2. Add `mapproxifoldConfig.cmake.in` as file in your root:
+    ```cmake
+    include("${CMAKE_CURRENT_LIST_DIR}/mapproxifoldTargets.cmake")
+    ```
+3. Build + Install your library<br>You might want to open the MSYS UCTR shell (if you uses [this windows setup](../Basics/Installation.md)) and then:
+    ```bash
+    cd C:/project/dir/
+
+    mkdir build
+    # or
+    rm -r build
+
+    cd build
+    cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../install ..
+    make
+    make install
+    ```
+    Now you should have:
+    ```text
+    install/
+    |___ include/
+    │       mapproxifold/...
+    |___ lib/
+    │       libmapproxifold.a
+    │
+    |___ lib/cmake/mapproxifold/
+            mapproxifoldConfig.cmake
+            mapproxifoldTargets.cmake
+    ```
+4. Others can use your cmake package with adding this into their cmake files:
+    ```cmake
+    cmake_minimum_required(VERSION 3.15)
+    project(my_app)
+
+    find_package(mapproxifold REQUIRED)
+
+    add_executable(my_app main.cpp)
+
+    target_link_libraries(my_app PRIVATE mapproxifold::mapproxifold)
+    ```
+    Then they can install it:
+    ```
+    cmake -DCMAKE_PREFIX_PATH="path/to/install" ..
+    ```
+
+<br><br>
+
+---
+
+### With Visual Studio
 
 1. Make a git project in github and make sure to click "Make README.md" + you can also directly add a License.md
 2. Clone your repository to your local system
