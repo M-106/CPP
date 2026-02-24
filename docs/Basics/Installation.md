@@ -76,17 +76,90 @@ Most used compiler is the GNU Compiler Collection (GCC). It is used to compile c
         # or if using MSYS shell
         pacman -S gcc
         ```
+    - Install also CMake + Ninja ([check here to find your wanted version](https://packages.msys2.org/packages/))
+        ```cpp
+        pacman -S cmake
+        pacman -S make
+        pacman -S ninja
+        ```
     - Version checking
         ```bash
         g++ --version 
         which g++
         ```
+        And check all packages with
+        ```bash
+        pacman -Q
+        ```
+        Check all available packages here (set `repository` to your shell) https://packages.msys2.org/packages/
     - Usage -> [also see](./Execution.md)
         ```cpp
         g++ main.cpp -o main.exe
         ```
+    - Usage with CMake + Ninja:
+        1. Open MSYS (UCTR, or whatever you use) shell
+        2. Navigate to your project
+            ```bash
+            cd ""
+            ```
+        3. Add `CMakeLists.txt` -> mapproxifold is the projectname:
+            ```txt
+            cmake_minimum_required(VERSION 3.15)
+            project(mapproxifold)
 
+            set(CMAKE_CXX_STANDARD 17)
 
+            # Create library / find all cpp files and with them all headers
+            file(GLOB_RECURSE MAPX_SOURCES
+                mapproxifold/src/*.cpp
+            )
+
+            add_library(mapproxifold ${MAPX_SOURCES})
+            # or
+            # add_library(mapproxifold SHARED ${MAPX_SOURCES})
+
+            target_include_directories(mapproxifold PUBLIC
+                ${PROJECT_SOURCE_DIR}/mapproxifold/include
+            )
+
+            # Install it (optional)
+            install(TARGETS mapproxifold DESTINATION lib)
+            install(DIRECTORY mapproxifold/include/ DESTINATION include)
+
+            # Test executable
+            add_executable(test_app
+                tests/test.cpp
+            )
+
+            target_link_libraries(test_app PRIVATE mapproxifold)
+            ```
+        3. Make build dir / clear build dir
+            ```bash
+            mkdir build
+            # or
+            rm -r build
+            
+            cd build
+            ```
+        4. Compile with CMake
+            ```bash
+            cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug ..
+            # or
+            cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Release ..
+
+            ninja
+
+            # without ninja:
+            # cmake -G "MinGW Makefiles" ..
+            # make
+
+            ./test_app.exe
+            # or
+            test_app.exe
+
+            # run tests
+            ctest
+            ```
 
 
 - Download a C++ Compiler in **Linux**:
