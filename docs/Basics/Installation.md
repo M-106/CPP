@@ -78,9 +78,16 @@ Most used compiler is the GNU Compiler Collection (GCC). It is used to compile c
         ```
     - Install also CMake + Ninja ([check here to find your wanted version](https://packages.msys2.org/packages/))
         ```cpp
-        pacman -S cmake
-        pacman -S make
-        pacman -S ninja
+        pacman -S mingw-w64-ucrt-x86_64-make
+        pacman -S mingw-w64-ucrt-x86_64-cmake
+        pacman -S mingw-w64-ucrt-x86_64-ninja
+        ```
+    - Fine-Polishing (may reopen the console):
+        ```bash
+        pacman -Syu
+        pacman -S --needed base-devel mingw-w64-ucrt-x86_64-toolchain
+        pacman -S mingw-w64-ucrt-x86_64-headers
+        pacman -S mingw-w64-ucrt-x86_64-crt
         ```
     - Version checking
         ```bash
