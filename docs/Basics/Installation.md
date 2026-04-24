@@ -308,7 +308,8 @@ Under Windows a very solid way to program C++ is via Visual Studio, Microsofts C
 ```bash
 sudo apt update
 sudo apt install build-essential
-sudo apt install cmake
+sudo apt update && sudo apt install cmake
+sudo apt update && sudo apt install ninja-build
 ```
 
 <br><br>
