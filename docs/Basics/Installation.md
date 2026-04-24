@@ -6,6 +6,7 @@ Contents
 - <a href="#installation_">Installation of GNU Compiler Collection</a>
 - <a href="VSCode_Linux_Container.md">Installation via Docker (link)</a>
 - <a href="#installation_via_vs">Installation via Visual Studio (Windows)</a>
+- <a href="#installation_on_linux">Installation on Linux (Ubuntu)</a>
 
 <br><br>
 
@@ -293,6 +294,137 @@ Under Windows a very solid way to program C++ is via Visual Studio, Microsofts C
     FetchContent_MakeAvailable(SDL)
     ```
     Which will fetch SDL during building. [See here the official repo](https://github.com/libsdl-org/SDL).
+
+
+
+<br><br>
+
+---
+<h3><a href="#top" name="installation_on_linux">Installation on Linux (Ubuntu)</a></h3>
+
+
+**Install GCC**
+
+```bash
+sudo apt update
+sudo apt install build-essential
+sudo apt install cmake
+```
+
+<br><br>
+
+Set versions (depends on which versions you have -> `ls /usr/bin/gcc*`):
+```bash
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 110
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 120
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 130
+
+sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 110
+sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 120
+sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 130
+```
+
+<br><br>
+
+**Verify Version**
+
+```bash
+gcc --version
+g++ --version
+which gcc
+```
+
+<br><br>
+
+**Install a specific GCC/G++ version**
+
+Find available versions:
+```bash
+apt search gcc-
+```
+
+<br><br>
+
+Install specific version:
+```bash
+sudo apt install gcc-11 g++-11
+```
+
+> You can install multiple version at one time.
+
+<br><br>
+
+**See all installed versions**
+
+```bash
+ls /usr/bin/gcc*
+```
+
+Or
+
+```bash
+update-alternatives --list gcc
+```
+
+Or
+
+```bash
+dpkg -l | grep gcc
+```
+
+<br><br>
+
+**Switch between versions**
+
+Systemwide:
+
+```bash
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 100
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 110
+
+sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 100
+sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 110
+```
+
+Or
+
+```bash
+sudo update-alternatives --config gcc
+sudo update-alternatives --config g++
+```
+
+This opens a menu where you choose your wanted version. It should look like that:
+```
+Selection    Path              Priority
+0            /usr/bin/gcc-11    110
+1            /usr/bin/gcc-10    100
+```
+
+<br><br>
+
+Local switching:
+
+(directly during compiling)
+```bash
+g++-11 main.cpp -o program
+g++-10 main.cpp -o program
+```
+
+<br><br>
+
+(temporary)
+```bash
+export CC=gcc-11
+export CXX=g++-11
+```
+
+
+
+
+
+
+
+
 
 
 
