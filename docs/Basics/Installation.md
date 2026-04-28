@@ -420,9 +420,32 @@ export CXX=g++-11
 ```
 
 
+<br><br>
+
+**Removing Versions**
 
 
+See all installed/registered versions:
+```bash
+update-alternatives --display gcc
+update-alternatives --display g++
+```
 
+<br><br>
+
+Remove specific version
+```bash
+sudo update-alternatives --remove gcc /usr/bin/gcc-10
+sudo update-alternatives --remove g++ /usr/bin/g++-10
+```
+
+<br><br>
+
+Remove all
+```bash
+sudo update-alternatives --remove-all gcc
+sudo update-alternatives --remove-all g++
+```
 
 
 
